@@ -1,0 +1,5 @@
+- What happens when fewer subjects are to be assigned
+    - For example
+        - 3 subjects
+        - 5 subjects
+

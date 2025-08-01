@@ -1,0 +1,7 @@
+- It takes `urls` a comma-separated keyed dict.
+- From each `key` in `urls`, start:
+   - Extract `grade`, and `subject` from `key`
+   - If it doesn't already exist, create a file `subject.csv` in the cwd + `database\grade`
+   - If it exists, then open it:
+        - For each `url` in `urls`:
+            - Add `key,url` into `subject.csv` provided it doesn't already exist

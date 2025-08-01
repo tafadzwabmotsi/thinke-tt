@@ -1,0 +1,29 @@
+{
+    "E:\\Studying and Learning\\\\Thinke.com\\\\Exam_Prep\\\\Resources\\\\EGCSE\\\\Geography": [
+        [
+            {
+                "path": "E:\\Studying and Learning\\\\Thinke.com\\\\Exam_Prep\\\\Resources\\\\EGCSE\\\\Geography\\\\2024\\\\EGCSE Geography 2024 Question Paper 1.pdf",
+                "url": "https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2024 Question Paper 1.pdf"
+            }
+        ],
+        [
+            {
+                "path": "E:\\Studying and Learning\\\\Thinke.com\\\\Exam_Prep\\\\Resources\\\\EGCSE\\\\Geography\\\\2023\\\\EGCSE Geography 2023 Question Paper 2.pdf",
+                "url": "https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2023 Question Paper 2.pdf"
+            }
+        ],
+        [
+            {
+                "path": "E:\\Studying and Learning\\\\Thinke.com\\\\Exam_Prep\\\\Resources\\\\EGCSE\\\\Geography\\\\2022\\\\EGCSE Geography 2022 Question Paper 2.pdf",
+                "url": "https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2022 Question Paper 2.pdf"
+            }
+        ],
+        [
+            {
+                "path": "E:\\Studying and Learning\\\\Thinke.com\\\\Exam_Prep\\\\Resources\\\\EGCSE\\\\Geography\\\\2020\\\\EGCSE Geography 2020 Question Paper 1.pdf",
+                "url": "https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2020 Question Paper 1.pdf"
+            }
+        ]
+    ]
+}
+

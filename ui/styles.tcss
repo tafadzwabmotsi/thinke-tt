@@ -1,0 +1,128 @@
+/* === Global Screen === */
+Screen {
+  align: center middle;
+  background: black;
+}
+
+
+Header{
+  margin-bottom: 1
+}
+
+/* === Form Container === */
+#form {
+  width: 100%;
+  padding: 1;
+  border: round white;
+  background: #1e1e1e;
+}
+
+/* === Scrollable Student List Panel === */
+#student_list, {
+  padding: 2;
+  height: 100%;
+  overflow-y: auto;
+  background: $surface;
+}
+
+
+/* === Labels === */
+Label {
+  color: white;
+  text-style: italic;
+}
+
+/* === Inputs (Text & DateSelect Placeholder) === */
+Input,
+.input,
+DateSelect Input {
+  color: $text;
+  border: round #666;
+  width: 100%;
+  text-style: italic;
+}
+
+Input {
+  padding: 0 1;
+  margin-bottom: 3;
+}
+
+.input {
+  margin-bottom: 2;
+}
+
+/* === Input Validation Borders === */
+Input.valid,
+HorizontalScroll.valid, 
+Collapsible.valid,
+RadioSet#grade_radio {
+  border: round green;
+}
+
+Input.invalid,
+HorizontalScroll.invalid {
+  border: round red;
+}
+
+/* === DateSelect Styling === */
+DateSelect {
+  background: $panel;
+  color: $text;
+  border: solid $accent;
+  height: auto;
+}
+
+/* === Collapsible Components === */
+Collapsible {
+  border: round $accent;
+  margin-bottom: 1;
+  padding: 1 1;
+  background: $boost;
+  color: $text;
+}
+
+
+Static {
+  padding: 1 0 1 1;
+  color: $text-muted;
+}
+
+/* === Radio Button === */
+RadioButton {
+  background: #2b2b2b;
+  color: #ffffff;
+}
+
+/* === Checkbox ===*/
+Checkbox{
+  padding: 0 2;
+}
+
+/* === Subject List === */
+#subject_list, #excluded_days_list {
+  margin-bottom: 1;
+}
+
+HorizontalScroll{
+  height: 5;
+}
+
+/* === Buttons === */
+Button#save_button, Button#insert_button {
+  width: 100%;
+}
+
+Button#insert_button{
+  margin-top: 2;
+  margin-bottom: 1;
+}
+
+Button.disable-button {
+  background: #3c3c3c;
+  color: #cfcfcf;
+}
+
+Button.enable-button {
+  background: green;
+  color: white;
+}

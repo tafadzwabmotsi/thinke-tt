@@ -1,0 +1,12 @@
+- Prioritized exam councils
+  - Collapsible - `Select prioritized exam councils`
+    - VerticalScroll
+      - Collapsible(s) - `Subject[i]`
+        - HorizontalScroll
+          - Exam Councils
+
+- Collapsible
+  - VerticalScroll
+    - Collapsible
+      - HorizontalScroll
+        - Checkbox

@@ -1,0 +1,15 @@
+{
+    "Mathematics": {
+        "0444": {
+            "2024": {
+                "June": "https://pastpapers.papacambridge.com/papers/caie/igcse-mathematics-0444-2024-may-june"
+            },
+            "2023": {
+                "November": "https://pastpapers.papacambridge.com/papers/caie/igcse-mathematics-0444-2023-oct-nov",
+                "June": "https://pastpapers.papacambridge.com/papers/caie/igcse-mathematics-0444-2023-may-june",
+            },
+            ...
+        },
+        ...
+    }
+}

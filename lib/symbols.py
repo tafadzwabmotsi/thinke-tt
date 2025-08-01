@@ -1,0 +1,13 @@
+class Symbols:
+    """Common UI symbols used across the app."""
+    arrow = "➤"
+    check = "✔"
+    cross = "✖"
+    warning = "⚠"
+    info = "ℹ"
+    right_arrow = "→"
+    bullet = "•"
+    ellipsis = "…"
+    box = "▣"
+    spinner_down = "⟳"
+    spinner_up = "↻"

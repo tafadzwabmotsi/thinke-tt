@@ -1,0 +1,12 @@
+PyMuPDF
+requests
+bs4
+tqdm
+html5lib
+rich
+pylatex 
+halo 
+pyexcel-ods3
+pywhatkit   
+textual
+textual-datepicker

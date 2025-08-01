@@ -1,0 +1,7 @@
+
+
+Preparing student's daily schedule
+
+Input 
+    - student
+    

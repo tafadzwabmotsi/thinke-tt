@@ -1,0 +1,48 @@
+- generate_exam_preparation_schedules:
+    - get_students_by_grade
+    - render ui
+        - display the data in a Collapsible list where each item is one student's data
+            - name
+            - grade 
+            - subjects
+        - add name and grade labels
+        - add two date pickers for the `start_date` and `end_date`
+        - add a horizontal scroll bar with a list of days for the selection of `excluded_days`
+        - display subjects in a Collapsible list `subjects`
+            - for each subject, 
+                - add an integer input box `subject_appearances_per_cycle`:
+                    - how many times should a subject appear in a single cycle?
+                - add a checkbox list of `prioritized_exam_councils`:
+                    - what are the prioritized exam councils from which past papers will be selected?
+    - get students exam schedule input data 
+
+
+- get_students_by_grade, then
+    - Collapsible list of students
+    - Display this list on a UI
+        - Student name
+        - Student grade 
+        - Student subjects 
+    
+    - On the same display
+        - Add exam schedule info,
+            - start_date(picker)
+            - end_date(picker)
+            - For each listed subject, 
+                - how many times should a subject appear in a single cycle?
+                - what are the prioritized exam councils from which past papers will be selected?
+
+
+
+- daily_schedules.csv
+    - student_id,dd-mm-yy,....
+
+- daily_schedule_subjects.csv
+    - student_id,dd-mm-yy,subject-1,subject-2,....,subject-n
+
+- daily_schedule_work_metadata.csv
+    - student_id,dd-mm-yy,subject-1,url-1,url-2,....,url-n
+    - student_id,dd-mm-yy,subject-2,url-1,url-2,....,url-n
+    ...
+    - student_id,dd-mm-yy,subject-n,url-1,url-2,....,url-n
+
