@@ -9,7 +9,7 @@ from extractor.past_paper_extractor import PastPaperExtractor
 from extractor.utils import PastPaperExtractorUtils
 from lib.exam_council import ExamCouncil
 from lib.grade import EceswaGrade
-from lib.subject import EceswaEgcseSubject, EceswaEpcSubject, EceswaJcSubject, SaveMyExamsIgcseSubjects
+from lib.subject import EceswaEgcseSubject, EceswaEpcSubject, EceswaJcSubject, SaveMyExamsIgcseSubject
 from lib.utils import LibUtils
 
 
@@ -203,7 +203,7 @@ class Schedule:
             case ExamCouncil.CAMBRIDGE:
                 return PastPaperExtractor.extract_igcse_past_paper_metadata(
                     pdf_path=pdf_file_path,
-                    subjects_enum=SaveMyExamsIgcseSubjects
+                    subjects_enum=SaveMyExamsIgcseSubject
                 ) 
             case ExamCouncil.ECESWA:
                 subjects_enum = EceswaEgcseSubject

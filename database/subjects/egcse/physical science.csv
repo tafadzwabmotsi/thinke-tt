@@ -1,13 +1,13 @@
-grade,subject,year,url
-EGCSE,Physical Science,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2022 Question Paper 1.pdf
-EGCSE,Physical Science,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2022 Question Paper 2.pdf
-EGCSE,Physical Science,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2022 Question Paper 3.pdf
-EGCSE,Physical Science,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2022 Question Paper 4.pdf
-EGCSE,Physical Science,2020,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2020 Question Paper 1.pdf
-EGCSE,Physical Science,2020,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2020 Question Paper 2.pdf
-EGCSE,Physical Science,2023,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2023 Question Paper 1.pdf
-EGCSE,Physical Science,2023,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2023 Question Paper 3.pdf
-EGCSE,Physical Science,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2024 Question Paper 1.pdf
-EGCSE,Physical Science,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2024 Question Paper 2.pdf
-EGCSE,Physical Science,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2024 Question Paper 3.pdf
-EGCSE,Physical Science,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2024 Additional Paper 3.pdf
+grade,subject,year,session,url
+EGCSE,Physical Science,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2022 Question Paper 1.pdf
+EGCSE,Physical Science,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2022 Question Paper 2.pdf
+EGCSE,Physical Science,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2022 Question Paper 3.pdf
+EGCSE,Physical Science,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2022 Question Paper 4.pdf
+EGCSE,Physical Science,2020,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2020 Question Paper 1.pdf
+EGCSE,Physical Science,2020,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2020 Question Paper 2.pdf
+EGCSE,Physical Science,2023,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2023 Question Paper 1.pdf
+EGCSE,Physical Science,2023,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2023 Question Paper 3.pdf
+EGCSE,Physical Science,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2024 Question Paper 1.pdf
+EGCSE,Physical Science,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2024 Question Paper 2.pdf
+EGCSE,Physical Science,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2024 Question Paper 3.pdf
+EGCSE,Physical Science,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Physical Science 2024 Additional Paper 3.pdf

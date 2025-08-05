@@ -1,9 +1,9 @@
-grade,subject,year,url
-EGCSE,Agriculture,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2022 Question Paper 1.pdf
-EGCSE,Agriculture,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2022 Question Paper 2.pdf
-EGCSE,Agriculture,2020,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2020 Question Paper 1.pdf
-EGCSE,Agriculture,2020,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2020 Question Paper 2.pdf
-EGCSE,Agriculture,2023,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2023 Question Paper 1.pdf
-EGCSE,Agriculture,2023,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2023 Question Paper 2.pdf
-EGCSE,Agriculture,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2024 Question Paper 1.pdf
-EGCSE,Agriculture,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2024 Question Paper 2.pdf
+grade,subject,year,session,url
+EGCSE,Agriculture,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2022 Question Paper 1.pdf
+EGCSE,Agriculture,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2022 Question Paper 2.pdf
+EGCSE,Agriculture,2020,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2020 Question Paper 1.pdf
+EGCSE,Agriculture,2020,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2020 Question Paper 2.pdf
+EGCSE,Agriculture,2023,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2023 Question Paper 1.pdf
+EGCSE,Agriculture,2023,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2023 Question Paper 2.pdf
+EGCSE,Agriculture,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2024 Question Paper 1.pdf
+EGCSE,Agriculture,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Agriculture 2024 Question Paper 2.pdf

@@ -7,6 +7,7 @@ from typing import List, Dict, Any, Literal, Optional
 from enum import Enum
 
 from downloader.scraper_tools.criterion import PaperCount
+from downloader.scraper_tools.utils import ScraperToolsUtils
 from lib.grade import EceswaGrade
 from lib.subject import EceswaSubject
 from lib.typing.data.downloader import DownloadLinks
@@ -165,7 +166,8 @@ class EceswaScraper:
             href=lambda h: h and (h.lower().endswith('.pdf')) # or h.lower().endswith('.mp3'))
         )
 
-        year_pattern = re.compile(r'(20(?:[0-2]\d|30))')
+        year_pattern = ScraperToolsUtils.get_year_regex()
+        session_pattern = ScraperToolsUtils.get_month_regex()
         links_by_group: Dict[str, List[str]] = defaultdict(list)
         added = 0
         current_year = None
@@ -174,15 +176,16 @@ class EceswaScraper:
             href = anchor.get('href')
             absolute_url = self._get_absolute_url(href)
             match = year_pattern.search(absolute_url)
+            
 
             if not match:
                 continue
 
             year = match.group(1)
             if group_by == "path":
-                key = f"{grade.value}\\{subject.value}\\{year}"
+                key = f"{grade.value}\\{subject.value}\\{year}\\November"
             else:
-                key = f"{grade.value},{subject.value},{year}"
+                key = f"{grade.value},{subject.value},{year},November"
 
             if limit is not None and added >= limit and current_year != year:
                 break

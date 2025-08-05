@@ -9,4 +9,3 @@ halo
 pyexcel-ods3
 pywhatkit   
 textual
-textual-datepicker

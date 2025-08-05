@@ -25,7 +25,7 @@ class PapaCambridgeIgcseSubject(Enum):
     PHYSICAL_SCIENCE = "Physical Science"
     WORLD_LITERATURE = "World Literature"
 
-class SaveMyExamsIgcseSubject:
+class SaveMyExamsSubjectDefinition:
     def __init__(self, site_name: str, local_name: str):
         """
         Constructs of a save igcse subject.
@@ -40,29 +40,44 @@ class SaveMyExamsIgcseSubject:
     def __str__(self):
         return f"{self.site_name} ({self.local_name})"
     
-class SaveMyExamsIgcseSubjects(Enum):
+class SaveMyExamsIgcseSubject(Enum):
     """
     All IGCSE subjects listed by savemyexams.com 
     """
-    ACCOUNTING = SaveMyExamsIgcseSubject("Accounting", "Accounting")
-    ADDITIONAL_MATHS = SaveMyExamsIgcseSubject("Additional Maths", "Additional Mathematics")
-    BIOLOGY = SaveMyExamsIgcseSubject("Biology", "Biology")
-    BUSINESS = SaveMyExamsIgcseSubject("Business", "Business Studies")
-    CHEMISTRY = SaveMyExamsIgcseSubject("Chemistry", "Chemistry") 
-    COMPUTER_SCIENCE = SaveMyExamsIgcseSubject("Computer Science", "Computer Science")
-    ECONOMICS = SaveMyExamsIgcseSubject("Economics", "Economics") 
-    ENGLISH_LANGUAGE = SaveMyExamsIgcseSubject("English Language", "English Language") 
-    ENGLISH_LITERATURE = SaveMyExamsIgcseSubject("English Literature", "Literature in English") 
-    GEOGRAPHY = SaveMyExamsIgcseSubject("Geography", "Geography") 
-    HISTORY = SaveMyExamsIgcseSubject("History", "History") 
-    ICT = SaveMyExamsIgcseSubject("ICT", "ICT") 
-    INTERNATIONAL_MATHS_CORE = SaveMyExamsIgcseSubject("International Maths: Core", "Mathematics") 
-    INTERNATIONAL_MATHS_EXTENDED = SaveMyExamsIgcseSubject("International Maths: Extended", "Mathematics") 
-    MATHS_CORE = SaveMyExamsIgcseSubject("Maths: Core", "Mathematics") 
-    MATHS_EXTENDED = SaveMyExamsIgcseSubject("Maths: Extended", "Mathematics") 
-    PHYSICS = SaveMyExamsIgcseSubject("Physics", "Physics") 
-    RELIGIOUS_STUDIES = SaveMyExamsIgcseSubject("Religious Studies", "Religious Education")
+    ACCOUNTING = SaveMyExamsSubjectDefinition("Accounting", "Accounting")
+    ADDITIONAL_MATHS = SaveMyExamsSubjectDefinition("Additional Maths", "Additional Mathematics")
+    BIOLOGY = SaveMyExamsSubjectDefinition("Biology", "Biology")
+    BUSINESS = SaveMyExamsSubjectDefinition("Business", "Business Studies")
+    CHEMISTRY = SaveMyExamsSubjectDefinition("Chemistry", "Chemistry") 
+    COMPUTER_SCIENCE = SaveMyExamsSubjectDefinition("Computer Science", "Computer Science")
+    ECONOMICS = SaveMyExamsSubjectDefinition("Economics", "Economics") 
+    ENGLISH_LANGUAGE = SaveMyExamsSubjectDefinition("English Language", "English Language") 
+    ENGLISH_LITERATURE = SaveMyExamsSubjectDefinition("English Literature", "Literature in English") 
+    GEOGRAPHY = SaveMyExamsSubjectDefinition("Geography", "Geography") 
+    HISTORY = SaveMyExamsSubjectDefinition("History", "History") 
+    ICT = SaveMyExamsSubjectDefinition("ICT", "ICT") 
+    INTERNATIONAL_MATHS_CORE = SaveMyExamsSubjectDefinition("International Maths: Core", "Mathematics") 
+    INTERNATIONAL_MATHS_EXTENDED = SaveMyExamsSubjectDefinition("International Maths: Extended", "Mathematics") 
+    MATHS_CORE = SaveMyExamsSubjectDefinition("Maths: Core", "Mathematics") 
+    MATHS_EXTENDED = SaveMyExamsSubjectDefinition("Maths: Extended", "Mathematics") 
+    PHYSICS = SaveMyExamsSubjectDefinition("Physics", "Physics") 
+    RELIGIOUS_STUDIES = SaveMyExamsSubjectDefinition("Religious Studies", "Religious Education")
     
+class SaveMyExamsOLevelSubject(Enum):
+    """
+    All O Level subjects listed by savemyexams.com 
+    """    
+    ADD_MATHS = SaveMyExamsSubjectDefinition("Additional Maths", "Additional Mathematics")
+    BIOLOGY = SaveMyExamsSubjectDefinition("Biology", "Biology")
+    BUSINESS_STUDIES = SaveMyExamsSubjectDefinition("Business Studies", "Business Studies")
+    CHEMISTRY = SaveMyExamsSubjectDefinition("Chemistry", "Chemistry") 
+    COMPUTER_SCIENCE = SaveMyExamsSubjectDefinition("Computer Science", "Computer Science")
+    ECONOMICS = SaveMyExamsSubjectDefinition("Economics", "Economics") 
+    GEOGRAPHY = SaveMyExamsSubjectDefinition("Geography", "Geography") 
+    HISTORY = SaveMyExamsSubjectDefinition("History", "History") 
+    MATHS = SaveMyExamsSubjectDefinition("Maths", "Mathematics")
+    PHYSICS = SaveMyExamsSubjectDefinition("Physics", "Physics") 
+
 class EceswaJcSubject(Enum):
     """
     List JC subjects offered by the Eceswa
@@ -124,6 +139,7 @@ class EceswaEpcSubject(Enum):
     HEALTH_AND_PHYSICAL_EDUCATION = "Health and Physical Education"
     ICT = "ICT"
     
+SaveMyExamsSubject = SaveMyExamsIgcseSubject | SaveMyExamsOLevelSubject
 EceswaSubject = EceswaEgcseSubject | EceswaJcSubject
-Subject = EceswaSubject | SaveMyExamsIgcseSubject
-SeniorHighSchoolSubject = EceswaEgcseSubject | SaveMyExamsIgcseSubject
+Subject = EceswaSubject | SaveMyExamsSubjectDefinition
+SeniorHighSchoolSubject = EceswaEgcseSubject | SaveMyExamsSubjectDefinition

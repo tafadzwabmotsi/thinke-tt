@@ -1,52 +1,80 @@
+from enum import Enum, auto
+from itertools import cycle
 import os
 import re
 from collections import defaultdict
 from datetime import datetime, timedelta
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
+from pathlib import PurePosixPath
+from collections import defaultdict
 
+from data.students.student_data_writer import StudentDataWriter
 from lib.exam_council import ExamCouncil
-from lib.grade import EceswaGrade
-from lib.typing.data.schedule import DayOfWeek
+from lib.grade import EceswaGrade, CambridgeGrade
+from lib.typing.data.schedule import DayOfWeek, ScheduleInputData
+from lib.typing.domain.schedule import ScheduledPastPaperMetadata, PastPaperMetadata
 from lib.typing.domain.student import Student, StudentRecord
 from lib.utils import LibUtils
 from scheduler.exam_prep.utils import ExamSchedulerUtils
 
 
+from datetime import datetime, timedelta
+from typing import Dict, List, Any
+
+from lib.typing.data.schedule import ScheduleInputData
+from data.students.student_data_reader import StudentDataReader
+from data.subjects.past_paper_metadata_reader import PastPaperMetadataReader
+
 class ExamScheduler:
     """
-    A class to generate and manage exam preparation schedules for students.
-
-    Once initialized with the student information, subjects, exam preferences, and scheduling
-    details, the class generates a day-by-day schedule for practicing past exam papers.
-
-    Args:
-        student_data: (Dict[str, Any]) The object that carries student data
-        read_base_path (str): Root directory where past paper resources are stored.
-        write_base_path (str): Root directory where generated schedules will be saved.
+    A class to generate and manage exam preparation schedules for a given student.
     """
 
     def __init__(
-        self,
-        student: Student,
-        start_date: str,
-        end_date: str,
-        excluded_days: List[DayOfWeek]
-    ):
+        self, 
+        student: Student, 
+        input_data: ScheduleInputData,
+        student_data_reader,
+        past_paper_readers
+        ):
         self._student = student
-        self._start_date = start_date
-        self._end_date = end_date
-        self._excluded_days = excluded_days
-        
-        print(student)
-        
-        self._read_base_path = None # TODO: Incorporate a way to internalize file paths
+        self._input_data = input_data
 
         self._exam_schedule: Dict[str, Any] = {}
 
+        # Readers
+        self._student_reader: StudentDataReader = student_data_reader
+       
+        self._past_paper_readers: Dict[str, PastPaperMetadataReader] = past_paper_readers
+        
+        # Derived data: subjects + prioritized councils
+        self._student_subjects_with_councils: List[Dict[str, Any]] = [
+            {
+                'subject': council.subject,
+                'councils': [ExamCouncil[c] for c in council.councils]
+            }
+            for council in self._input_data.prioritized_councils
+            if council.subject in self._student.subjects
+        ]
+
+        # Paper tracking
+        self._assigned_paper_urls: set[str] = self._load_assigned_paper_urls()
+
+        # Cached past papers per subject
+        self._subject_paper_cache: Dict[str, Dict[str, List[PastPaperMetadata]]] = self._cache_all_subject_papers()
+        
+        # paper = self._get_next_cambridge_igcse_unassigned_paper('English Language', ExamCouncil.CAMBRIDGE)
+        
+        # print(paper)    
+        
+        # print(self._subject_paper_cache.get('English Language').get('EGCSE'))
+    
     def _generate_monthly_schedules(self) -> List[Dict]:
-        """Generate valid monthly schedule blocks between start and end dates, excluding specified weekdays."""
-        start_date = datetime.strptime(self._start_date, "%d-%m-%y")
-        end_date = datetime.strptime(self._end_date, "%d-%m-%y")
+        """Generate valid monthly schedule blocks between start and end dates, 
+           excluding specified weekdays.
+        """
+        start_date = datetime.strptime(self._input_data.start_date, "%d-%m-%y")
+        end_date = datetime.strptime(self._input_data.end_date, "%d-%m-%y")
 
         delta = timedelta(days=1)
         current = start_date
@@ -54,7 +82,7 @@ class ExamScheduler:
 
         while current <= end_date:
             weekday_name = current.strftime('%A')
-            if weekday_name not in self._excluded_days:
+            if weekday_name not in self._input_data.excluded_days:
                 year = current.year
                 month_name = current.strftime('%B')
                 day_formatted = current.strftime('%d-%m-%y')
@@ -72,6 +100,174 @@ class ExamScheduler:
             current += delta
 
         return list(monthly_schedules.values())
+
+    def _load_assigned_paper_urls(self) -> set[str]:
+        """Load previously assigned past paper URLs to avoid reassignment."""
+        rows = self._student_reader.get_assigned_schedules()
+        return {
+            row['url']
+            for row in rows
+            if row.get('url')
+        }
+
+    def _get_subject_papers(self, subject: str) -> List[PastPaperMetadata]:
+        """Retrieve all papers (as PastPaper objects) for a subject, from cache."""
+        return self._subject_paper_cache.get(subject, [])
+
+    def _cache_all_subject_papers(self) -> Dict[str, Dict[str, List[PastPaperMetadata]]]:
+        cache: Dict[str, Dict[str, List[PastPaperMetadata]]] = {}
+        for subject in self._student.subjects:
+            cache[subject] = {}
+            for grade_key, reader in self._past_paper_readers.items():
+                papers = reader.get_subject_metadata(subject)
+                if papers:
+                    cache[subject][grade_key] = papers
+        return cache
+
+    def _get_next_cambridge_igcse_unassigned_paper(
+        self,
+        subject: str,
+    ) -> List[PastPaperMetadata]:
+        """
+        Return the next unassigned IGCSE paper group (e.g., QP + IN) for the given subject.
+        A group is a set of papers sharing grade, subject, year, session, and filename stem.
+        """
+        grade = CambridgeGrade.IGCSE.value
+        all_papers = self._subject_paper_cache.get(subject, {}).get(grade, [])
+        grouped_papers = defaultdict(list)
+
+        def extract_group_key(paper: PastPaperMetadata) -> Optional[str]:
+            try:
+                filename = PurePosixPath(paper.url).name
+                normalized = re.sub(r'_(qp|in)_', '_', filename)
+                return f"{paper.grade}::{paper.subject}::{paper.year}::{paper.session}::{normalized}"
+            except Exception:
+                return []
+
+        # Group papers by metadata + normalized filename stem
+        for paper in all_papers:
+            key = extract_group_key(paper)
+            if key:
+                grouped_papers[key].append(paper)
+
+        for paper_group in grouped_papers.values():
+            if all(p.url not in self._assigned_paper_urls for p in paper_group):
+                for p in paper_group:
+                    self._assigned_paper_urls.add(p.url)
+                return paper_group 
+
+        return []
+    
+    def _get_next_eceswa_unassigned_paper(self, subject: str, grade: str) -> Optional[List[PastPaperMetadata]]:
+        """
+        Return the next unassigned ECESWA paper group (Question/Insert), grouped by paper number.
+        """
+        
+        def extract_paper_number(url: str) -> Optional[int]:
+            """
+            Extracts the paper number from the filename in the URL.
+            Returns an integer (e.g., 1, 2) or None if not found.
+            """
+            match = re.search(r"Paper\s*(\d+)", url, re.IGNORECASE)
+            if match:
+                return int(match.group(1))
+            return None
+        
+        subject_papers = self._subject_paper_cache.get(subject, {}).get(grade, [])
+        grouped: Dict[tuple[int, str, Optional[int]], List[PastPaperMetadata]] = defaultdict(list)
+
+        # Group by (year, session, paper_number)
+        for paper in subject_papers:
+            paper_number = extract_paper_number(paper.url)
+            group_key = (paper.year, paper.session, paper_number)
+            grouped[group_key].append(paper)
+
+        # Sort groups by year descending, then paper number ascending
+        sorted_groups = sorted(grouped.items(), key=lambda x: (-x[0][0], x[0][2] or 0))
+
+        for (_, _, _), papers in sorted_groups:
+            if all(p.url not in self._assigned_paper_urls for p in papers):
+                return papers
+
+        return None
+
+    def _get_next_eceswa_egcse_unassigned_paper(self, subject: str) -> List[PastPaperMetadata]:
+        return self._get_next_eceswa_unassigned_paper(subject, EceswaGrade.EGCSE.value)
+
+    def _get_next_eceswa_jc_unassigned_paper(self, subject: str) -> List[PastPaperMetadata]:
+        return self._get_next_eceswa_unassigned_paper(subject, EceswaGrade.JC.value)
+
+    def get_scheduled_papers_for_student(self) -> List[ScheduledPastPaperMetadata]:
+        def get_fallback_papers(
+            subject: str,
+            council: ExamCouncil,
+            councils: List[ExamCouncil]
+        ) -> List[PastPaperMetadata]:
+            """
+            Return the next set of unassigned papers based on council and fallback strategy.
+            Prioritizes ECESWA for EGCSE students, but falls back to CAMBRIDGE if needed.
+            """
+            papers = []
+
+            if council == ExamCouncil.CAMBRIDGE:
+                papers = self._get_next_cambridge_igcse_unassigned_paper(subject)
+
+            elif self._student.grade == EceswaGrade.EGCSE.value:
+                # First try ECESWA
+                papers = self._get_next_eceswa_egcse_unassigned_paper(subject)
+
+                # Fallback to CAMBRIDGE if ECESWA papers are exhausted
+                if not papers and ExamCouncil.CAMBRIDGE in councils:
+                    papers = self._get_next_cambridge_igcse_unassigned_paper(subject)
+
+            else:
+                # For JC students (only ECESWA)
+                papers = self._get_next_eceswa_jc_unassigned_paper(subject)
+
+            return papers
+
+        all_days = [
+            day
+            for month_block in self._generate_monthly_schedules()
+            for day in month_block["days"]
+        ]
+
+        assigned_rows: List[ScheduledPastPaperMetadata] = []
+        
+        subjects_cycle = cycle(self._student_subjects_with_councils)
+        subject_assignments: Dict[str, int] = {
+            s_w_c['subject']: 0 
+            for s_w_c in self._student_subjects_with_councils
+        }
+
+        for day in all_days:
+            for _ in range(len(self._student_subjects_with_councils)):
+                subject_entry = next(subjects_cycle)
+                subject = subject_entry["subject"]
+                councils = subject_entry["councils"]
+                
+                council = councils[subject_assignments[subject] % len(councils)]
+
+                papers = get_fallback_papers(subject, council, councils)
+                
+                if papers:
+                    for paper in papers:
+                        self._assigned_paper_urls.add(paper.url)
+                        assigned_rows.append(ScheduledPastPaperMetadata(
+                            student_id=self._student.id,
+                            date=day,
+                            grade=paper.grade,
+                            subject=paper.subject,
+                            year=paper.year,
+                            session=paper.session,
+                            url=paper.url
+                        ))
+                    subject_assignments[subject] += 1
+                    
+                    # move to the next day after a successful assignment
+                    break 
+        
+        return assigned_rows
 
     def _assign_exam_council(
         self,

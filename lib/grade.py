@@ -3,7 +3,7 @@ from enum import Enum
 
 class PapaCambridgeGrade(Enum):
     """
-    Lists grades from papacambridge.com
+    Lists grades from cambridge
     """
     IGCSE = "IGCSE"
     # Could have more grades distinct from SaveMyExamsGrade 
@@ -18,10 +18,10 @@ class EceswaGrade(Enum):
 
 class CambridgeGrade(Enum):
     """
-    Defines all the possible grades from savemyexams.com
+    Defines all the possible grades from cambridge
     """
     IGCSE = "IGCSE"
-    # Could have more grade distinct from PapaCambridgeGrade
+    O_LEVEL = "O-Level"
  
 Grade =  EceswaGrade | CambridgeGrade
 

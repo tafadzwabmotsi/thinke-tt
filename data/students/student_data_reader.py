@@ -1,18 +1,17 @@
 import csv
-from typing import List
+from typing import Dict, List
 
 from lib.grade import EceswaGrade
 from lib.paths import StudentCSVPaths
 from lib.typing.domain.student import Student
 
+# data/students/student_data_reader.py
 class StudentDataReader:
-    def __init__(self):
-        """
-        Initialize the reader.
-        """
+    def __init__(self, grade: str):
+        self._grade = grade
         self._paths = StudentCSVPaths()
 
-    def get_students_by_grade(self, grade: EceswaGrade) -> List[Student]:
+    def get_students_by_grade(self) -> List[Student]:
         """
         Retrieve all students for the given grade.
 
@@ -35,7 +34,7 @@ class StudentDataReader:
                         student_id = int(row[0])
                         name = row[1].strip()
                         student_grade = row[2].strip()
-                        if student_grade == grade.value:
+                        if student_grade == self._grade:
                             matching_infos.append((student_id, name, student_grade))
                     except ValueError:
                         continue
@@ -85,3 +84,12 @@ class StudentDataReader:
             ))
 
         return students
+
+    def get_assigned_schedules(self) -> List[Dict[str, str]]:
+        rows = []
+        if self._paths.assigned_schedules_file.exists():
+            with self._paths.assigned_schedules_file.open(mode='r', newline='', encoding='utf-8') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    rows.append(row)
+        return rows

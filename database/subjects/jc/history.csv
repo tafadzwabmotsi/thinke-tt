@@ -1,11 +1,11 @@
-grade,subject,year,url
-JC,History,2020,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2020 Question Paper 1.pdf
-JC,History,2020,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2020 Question Paper 2.pdf
-JC,History,2021,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2021 Question Paper 1.pdf
-JC,History,2021,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2021 Question Paper 2.pdf
-JC,History,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2022 Question Paper 1.pdf
-JC,History,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2022 Question Paper 2.pdf
-JC,History,2023,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2023 Question Paper 1.pdf
-JC,History,2023,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2023 Question Paper 2.pdf
-JC,History,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2024 Question Paper 1.pdf
-JC,History,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2024 Question Paper 2.pdf
+grade,subject,year,session,url
+JC,History,2020,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2020 Question Paper 1.pdf
+JC,History,2020,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2020 Question Paper 2.pdf
+JC,History,2021,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2021 Question Paper 1.pdf
+JC,History,2021,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2021 Question Paper 2.pdf
+JC,History,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2022 Question Paper 1.pdf
+JC,History,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2022 Question Paper 2.pdf
+JC,History,2023,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2023 Question Paper 1.pdf
+JC,History,2023,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2023 Question Paper 2.pdf
+JC,History,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2024 Question Paper 1.pdf
+JC,History,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/JC History 2024 Question Paper 2.pdf

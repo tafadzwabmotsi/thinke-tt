@@ -4,7 +4,7 @@ from typing import List
 from lib.typing.data.downloader import DownloadLinks
 
 
-class SaveMetadata:
+class PaperPaperMetadataWriter:
     """
     Handles the storage of subject-specific download metadata into structured CSV files.
 
@@ -23,7 +23,7 @@ class SaveMetadata:
     def __init__(self, urls: DownloadLinks):
         self._urls = urls
 
-    def save(self):
+    def write(self):
         """
         Saves download URLs into CSV files organized by grade and subject.
 

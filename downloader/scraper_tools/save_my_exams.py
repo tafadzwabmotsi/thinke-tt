@@ -10,7 +10,7 @@ from typing import List, Literal, Optional, Dict, Tuple, Union
 from downloader.scraper_tools.criterion import PaperCount
 from downloader.scraper_tools.utils import ScraperToolsUtils
 from lib.grade import CambridgeGrade
-from lib.subject import SaveMyExamsIgcseSubject, SaveMyExamsIgcseSubject
+from lib.subject import SaveMyExamsSubject, SaveMyExamsSubjectDefinition, SaveMyExamsSubjectDefinition
 from lib.typing.data.downloader import DownloadLinks
     
 
@@ -49,7 +49,7 @@ class SaveMyExamsScraper:
         self._soup_cache: Dict[str, BeautifulSoup] = {}
         
         # Cache for specific subject past papers URLs after they are resolved (grade, subject) -> URL
-        self._past_papers_url_cache: Dict[tuple[CambridgeGrade, SaveMyExamsIgcseSubject], Optional[str]] = {}
+        self._past_papers_url_cache: Dict[tuple[CambridgeGrade, SaveMyExamsSubject], Optional[str]] = {}
 
 
     def _get_soup(self, url: str, use_cache: bool = True) -> Optional[BeautifulSoup]:
@@ -82,7 +82,7 @@ class SaveMyExamsScraper:
     def _get_subject_past_papers_url(
         self, 
         grade: CambridgeGrade, 
-        subject: SaveMyExamsIgcseSubject
+        subject: SaveMyExamsSubject
     ) -> Optional[str]:
             """
             Navigates to the grade's main page (e.g., /igcse/), finds the specific subject's
@@ -160,7 +160,7 @@ class SaveMyExamsScraper:
     def _extract_pdf_links_from_table(
         self,
         grade: CambridgeGrade,
-        subject: SaveMyExamsIgcseSubject,
+        subject: SaveMyExamsSubject,
         limit: Optional[int] = None,
         group_by: Literal["path", "csv"] = "path"
     ) -> Dict[str, List[str]]:
@@ -275,7 +275,7 @@ class SaveMyExamsScraper:
     def get_pdf_download_urls(
         self,
         grade: CambridgeGrade,
-        subject: SaveMyExamsIgcseSubject,
+        subject: SaveMyExamsSubject,
         paper_count: PaperCount
     ) -> DownloadLinks:
         return self._extract_pdf_links_from_table(
@@ -288,7 +288,7 @@ class SaveMyExamsScraper:
     def get_pdf_save_urls(
         self,
         grade: CambridgeGrade,
-        subject: SaveMyExamsIgcseSubject
+        subject: SaveMyExamsSubject
     ) -> DownloadLinks:
         return self._extract_pdf_links_from_table(
             grade=grade,

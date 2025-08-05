@@ -1,0 +1,33 @@
+
+- Input
+    - schedule_input_data
+        - start_date
+        - end_date
+        - excluded_days
+        - prioritized_councils
+            - subject
+            - councils
+
+- Processing
+    - if not exist create `/database/exam_preparation`
+        - dates.csv
+        - excluded_days.csv
+        - prioritized_councils.csv
+
+    - otherwise
+        - open dates.csv,
+            - take start_date and end_date and convert them to `dd-mm-yy` string format write 
+            start_date,end_date
+
+        - open excluded_days.csv
+            - write day_1,day_2,...,day_n
+
+    - in prioritized_councils.csv
+        - write subject_1,council_1,council_2,....,council_n
+        - write subject_2,council_1,council_2,....,council_n
+        ...
+        - write subject_n,council_1,council_2,....,council_n
+
+- Output
+    - populated csv files
+        

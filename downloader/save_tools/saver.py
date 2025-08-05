@@ -2,12 +2,12 @@
 
 import requests
 
-from data.past_papers.save_metadata import SaveMetadata
+from data.subjects.past_paper_metadata_writer import PaperPaperMetadataWriter
 from downloader.scraper_tools.eceswa import EceswaScraper
 from downloader.scraper_tools.papacambridge import PapaCambridgeScraper
 from downloader.scraper_tools.save_my_exams import SaveMyExamsScraper
 from lib.grade import CambridgeGrade, EceswaGrade
-from lib.subject import EceswaEgcseSubject, EceswaJcSubject, SaveMyExamsIgcseSubjects
+from lib.subject import EceswaEgcseSubject, EceswaJcSubject, SaveMyExamsIgcseSubject, SaveMyExamsOLevelSubject
 from lib.utils import LibUtils
 
 
@@ -46,9 +46,13 @@ class PastPaperSaver:
                 start_text=f"Saving URLs - {grade.value}",
                 success_text=f"Successfully saved all URLs - {grade.value}"
             ):
-                if grade == CambridgeGrade.IGCSE:
-                    subject_enum = SaveMyExamsIgcseSubjects
+                if grade == CambridgeGrade.IGCSE or grade == CambridgeGrade.O_LEVEL:
                     scraper = self._save_my_exams_scraper
+                    
+                    if grade == CambridgeGrade.IGCSE:
+                        subject_enum = SaveMyExamsIgcseSubject 
+                    else:
+                        subject_enum = SaveMyExamsOLevelSubject
                 elif grade in (EceswaGrade.JC, EceswaGrade.EGCSE):
                     subject_enum = EceswaJcSubject if grade == EceswaGrade.JC else EceswaEgcseSubject
                     scraper = self._eceswa_scraper
@@ -57,7 +61,7 @@ class PastPaperSaver:
 
                 for subject in subject_enum:
                     urls = scraper.get_pdf_save_urls(grade, subject)
-                    SaveMetadata(urls).save()
+                    PaperPaperMetadataWriter(urls).write()
 
 
 

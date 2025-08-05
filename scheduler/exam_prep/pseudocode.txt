@@ -1,0 +1,13 @@
+Now that:
+
+- we can generate monthly schedules and that each student's subjects are grouped together with prioritized exam councils. E.g.
+
+`_student_subjects_with_councils`
+[{'subject': 'Business Studies', 'councils': ['ECESWA', 'CAMBRIDGE']}, {'subject': 'Design and Technology', 'councils': ['ECESWA', 'CAMBRIDGE']}, {'subject': 'English Language', 'councils': ['ECESWA', 'CAMBRIDGE']}, {'subject': 'First Language SiSwati', 'councils': ['ECESWA']}, {'subject': 'Geography', 'councils': ['ECESWA', 'CAMBRIDGE']}, {'subject': 'Literature in English', 'councils': ['ECESWA', 'CAMBRIDGE']}, {'subject': 'Mathematics', 'councils': ['ECESWA', 'CAMBRIDGE']}, {'subject': 'Physical Science', 'councils': ['ECESWA', 'CAMBRIDGE']}, {'subject': 'Religious Education', 'councils': ['ECESWA']}, {'subject': 'Siswati as a Second Language', 'councils': ['ECESWA']}]
+
+- can generate monthly schedules, e.g:
+
+`_generate_monthly_schedules()`
+[{'year': 2025, 'month': 'August', 'days': ['04-08-25', '05-08-25', '06-08-25', '07-08-25', '10-08-25', '11-08-25', '12-08-25', '13-08-25', '14-08-25', '17-08-25', '18-08-25', '19-08-25', '20-08-25', '21-08-25', '24-08-25', '25-08-25', '26-08-25', '27-08-25', '28-08-25', '31-08-25']}, {'year': 2025, 'month': 'September', 'days': ['01-09-25', '02-09-25', '03-09-25', '04-09-25', '07-09-25', '08-09-25', '09-09-25', '10-09-25', '11-09-25', '14-09-25', '15-09-25', '16-09-25', '17-09-25', '18-09-25', '21-09-25', '22-09-25', '23-09-25', '24-09-25', '25-09-25', '28-09-25', '29-09-25', '30-09-25']}]
+
+- and that we can cache all the available subject

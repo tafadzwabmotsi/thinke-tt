@@ -22,3 +22,17 @@ class ScheduleInputData:
     end_date: str
     excluded_days: List[DayOfWeek]
     prioritized_councils: List[PrioritizedCouncil]
+    
+
+@dataclass
+class ScheduleOutputData:
+    student_id: str
+    day: str
+    subject: str
+    council: str
+    session: str
+    paper_title: str
+    paper_code: str
+    paper_type: str
+    time_allowed: str
+    paper_url: str

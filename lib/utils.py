@@ -26,6 +26,23 @@ class LibUtils:
         except ValueError:
             raise ValueError(f"Invalid date format: '{date_str}'. Expected 'dd-mm-yy'.")
 
+    @staticmethod
+    def get_machine_readable_date(date_str: str) -> str:
+        """
+        Converts a human-readable date string like '22 July 2025' into 'dd-mm-yy' format.
+
+        Args:
+            date_str (str): The date string in 'dd Month yyyy' format.
+
+        Returns:
+            str: A machine-readable date string in 'dd-mm-yy' format.
+        """
+        try:
+            dt = datetime.strptime(date_str, "%d %B %Y")
+            return dt.strftime("%d-%m-%y")
+        except ValueError:
+            raise ValueError(f"Invalid date format: '{date_str}'. Expected 'dd Month yyyy'.")
+    
     @contextmanager
     def spinner(
         start_text: str, 

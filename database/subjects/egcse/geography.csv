@@ -1,8 +1,8 @@
-grade,subject,year,url
-EGCSE,Geography,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2022 Question Paper 1.pdf
-EGCSE,Geography,2022,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2022 Question Paper 2.pdf
-EGCSE,Geography,2020,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2020 Question Paper 1.pdf
-EGCSE,Geography,2023,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2023 Question Paper 1.pdf
-EGCSE,Geography,2023,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2023 Question Paper 2.pdf
-EGCSE,Geography,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2024 Question Paper 2.pdf
-EGCSE,Geography,2024,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2024 Question Paper 1.pdf
+grade,subject,year,session,url
+EGCSE,Geography,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2022 Question Paper 1.pdf
+EGCSE,Geography,2022,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2022 Question Paper 2.pdf
+EGCSE,Geography,2020,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2020 Question Paper 1.pdf
+EGCSE,Geography,2023,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2023 Question Paper 1.pdf
+EGCSE,Geography,2023,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2023 Question Paper 2.pdf
+EGCSE,Geography,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2024 Question Paper 2.pdf
+EGCSE,Geography,2024,November,https://www.examscouncil.org.sz/upload-centre/past_papers/EGCSE Geography 2024 Question Paper 1.pdf
