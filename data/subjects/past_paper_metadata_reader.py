@@ -25,7 +25,8 @@ class PastPaperMetadataReader:
                             subject=row['subject'].strip(),
                             year=int(row['year'].strip()),
                             session=row['session'].strip(),
-                            url=row['url'].strip()
+                            url=row['url'].strip(),
+                            paper=""
                         )
                         metadata.append(paper)
                     except KeyError:

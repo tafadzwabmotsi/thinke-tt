@@ -216,7 +216,7 @@ class StudentDataReaderUI(App):
         checkboxes = subjects_list.query(Checkbox)
         
         self.student_subjects = list({
-            checkbox.label
+            str(checkbox.label)
             for checkbox in checkboxes
             if checkbox.value
         })

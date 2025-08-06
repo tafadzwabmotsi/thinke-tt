@@ -9,5 +9,7 @@ class Symbols:
     bullet = "•"
     ellipsis = "…"
     box = "▣"
+    circle = "◉"
     spinner_down = "⟳"
     spinner_up = "↻"
+    attachment = "📎"

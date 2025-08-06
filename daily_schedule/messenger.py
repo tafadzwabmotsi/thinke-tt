@@ -1,6 +1,12 @@
 
-from typing import Any, Dict
+import textwrap
+from typing import Any, Dict, List
 
+from lib.exam_council import ExamCouncil
+from lib.grade import CambridgeGrade, EceswaGrade
+from lib.symbols import Symbols
+from lib.typing.domain.schedule import ScheduledPastPaperMetadata
+from lib.typing.domain.student import Student, StudentRecord
 from lib.utils import LibUtils
 
 class WhatsAppMessenger:
@@ -9,49 +15,50 @@ class WhatsAppMessenger:
     to the given student
     """
     
-    def __init__(self, schedule: Dict[str, Any]):
-        self._schedule = schedule
+    def __init__(self, phone: str, past_paper: ScheduledPastPaperMetadata):
+        
+        self._phone = phone
+        self._past_paper = past_paper
+        
     
     def send_msg(self) -> None:
-        schedule = self._schedule
+        p = self._past_paper
         
-        phone = self._format_phone(schedule.get("phone"))
-        name = schedule.get("name")
-        day = schedule.get("day")
-        attachments = schedule.get("attachments")
+        day =  LibUtils.get_human_readable_date(p.date)
+        exam_council = self._get_exam_council()
+        subject = f'{p.subject} {p.paper}'
+        session = f'{p.session} {p.year}'
+        url = p.url
+        
+        phone = self._get_formatted_phone()
+        
+        msg = textwrap.dedent(f"""\
+            *{day}*
 
-        if not phone or not attachments:
-            print("Missing phone number or attachments.")
-            return
-    
-        for attachment in attachments:
-            message = self._build_attachment_message(day, attachment)
-            print(f"\n◉ Sending exam preparation work [{LibUtils.get_human_readable_date(day)}] - {name}\n")
+            _{exam_council}_
+            _{subject}_
+            _{session}_
 
-            try:
-                # pywhatkit.sendwhatmsg_instantly(phone, message.strip(), wait_time=10, tab_close=True)
-                print(message)
-            except Exception as e:  
-                print("Failed to send message:", str(e))
+            {Symbols.attachment} {url}
+            """
+        )
+     
+        try:
+            # pywhatkit.sendwhatmsg_instantly(phone, message.strip(), wait_time=10, tab_close=True)
+            return msg
+        except Exception as e:  
+            print("Failed to send message:", str(e))
                 
-    def _format_phone(self, phone: int | str) -> str:
+    def _get_formatted_phone(self) -> str:
         """
         Ensures the phone is in international format (e.g. '+26812345678')
         """
-        return str(phone) if str(phone).startswith('+') else f"+{str(phone)}"
+        return self._phone if self._phone.startswith('+') else f"+{self._phone}"
     
-    def _build_attachment_message(self, day: str, attachment: Dict[str, Any]) -> str:
-        lines = [f"*{day}*\n"] if day else []
-
-        for k in ["subject", "paper", "insert", "session", "code", "time_allowed"]:
-            v = attachment.get(k)
-            if v:
-                lines.append(f"_{v}_")
-
-    
-        lines.append(f"\n📎 {attachment.get("url")}")
-
-        return f'{"\n".join(lines)}\n'
-
+    def _get_exam_council(self) -> str:
+        if self._past_paper.grade == CambridgeGrade.IGCSE.value:
+            return ExamCouncil.CAMBRIDGE.value
+        else:
+            return ExamCouncil.ECESWA.value
     
         

@@ -8,6 +8,7 @@ class PastPaperMetadata:
     year: int
     url: str
     session: str
+    paper: str
 
 @dataclass
 class ScheduledPastPaperMetadata(PastPaperMetadata):

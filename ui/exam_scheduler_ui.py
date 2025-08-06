@@ -172,7 +172,8 @@ class ExamSchedulerUI(App):
                     JcSubject.RELIGIOUS_EDUCATION.value,
                     JcSubject.FRENCH.value,
                     JcSubject.HISTORY.value,
-                    JcSubject.CONSUMER_SCIENCE.value
+                    JcSubject.CONSUMER_SCIENCE.value,
+                    JcSubject.ADD_MATHS.value
                 ]
             )
             

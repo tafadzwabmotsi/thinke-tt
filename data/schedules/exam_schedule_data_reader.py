@@ -13,8 +13,8 @@ class ExamSchedulerDataReader:
     Reads structured exam preparation data from CSV files and reconstructs a ScheduleInputData object.
     """
 
-    def __init__(self, grade: str):
-        self.grade = grade.lower()
+    def __init__(self, grade: EceswaGrade):
+        self.grade = grade.value.lower()
         self._paths = ExamScheduleCSVPaths(grade=self.grade)
 
     def get_schedule_input_data(self) -> Optional[ScheduleInputData]:

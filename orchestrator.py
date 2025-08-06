@@ -4,10 +4,9 @@ import os
 import time
 from typing import Dict, List
 from constants import BASE_PATH
-from daily_schedule.schedule import Schedule
+from daily_schedule.messenger import WhatsAppMessenger
 from data.schedules.exam_schedule_data_reader import ExamSchedulerDataReader
 from data.schedules.exam_schedule_data_writer import ExamSchedulerDataWriter
-from data.students.student_data import StudentData
 from data.students.student_data_reader import StudentDataReader
 from data.students.student_data_writer import StudentDataWriter
 from data.subjects.past_paper_metadata_reader import PastPaperMetadataReader
@@ -15,24 +14,19 @@ from downloader.download_tools.downloader import PastPaperDownloader
 from downloader.save_tools.saver import PastPaperSaver
 from downloader.scraper_tools.criterion import PaperCount
 from lib.colors import Colors 
+from lib.exam_council import ExamCouncil
 from lib.grade import CambridgeGrade, EceswaGrade, Grade
-from lib.subject import EceswaEgcseSubject, Subject
-from daily_schedule.messenger import WhatsAppMessenger
+from lib.subject import Subject
 from lib.symbols import Symbols
 from lib.typing.data.schedule import ScheduleInputData
 from lib.typing.domain.student import StudentRecord
 from lib.utils import LibUtils
-from scheduler.exam_prep.assigner import ExamAssigner
 from scheduler.exam_prep.scheduler import ExamScheduler
 from ui.exam_scheduler_ui import ExamSchedulerUI
 from ui.student_data_reader_ui import StudentDataReaderUI
 
 
 # Global objects
-students_data = StudentData(
-    in_data_filename='tt_students_data.ods',
-    out_data_filename='tt_daily_schedules_data.ods'
-).get_students_data()
 
 class Orchestrator:
     """
@@ -41,6 +35,7 @@ class Orchestrator:
     
     @staticmethod
     def save_metadata():
+        # TODO: Check if past paper metadata already exists and skill the process if for
         PastPaperSaver().save()
     
     @staticmethod
@@ -102,41 +97,58 @@ class Orchestrator:
     
     @staticmethod
     def generate_exam_preparation_schedules():
-       
+        
         for grade in EceswaGrade:
-            students = StudentDataReader(grade.value).get_students_by_grade()
+            students = StudentDataReader().get_all_students_by_grade(grade)
             writer = StudentDataWriter()
+            input_data = ExamSchedulerDataReader(grade).get_schedule_input_data()
+            student_data_reader = StudentDataReader()
+            past_paper_readers = {
+                grade.value: PastPaperMetadataReader(grade.value) 
+                for grade in list(list(EceswaGrade) + list(CambridgeGrade))
+            }
             
             for student in students:
-                with LibUtils.spinner(
-                        start_text=f"Saving exam preparation schedule - {student.name}",
-                        success_text=f"Successfully saved exam preparation schedule - {student.name}"
-                    ):
-                    
-                    scheduled_papers = ExamScheduler(
+                scheduler = ExamScheduler(
                         student=student, 
-                        input_data=ExamSchedulerDataReader(student.grade).get_schedule_input_data(),
-                        student_data_reader=StudentDataReader(student.grade),
-                        past_paper_readers={
-                            grade.value: PastPaperMetadataReader(grade.value) 
-                            for grade in list(list(EceswaGrade) + list(CambridgeGrade))
-                        }
-                    ).get_scheduled_papers_for_student()
+                        input_data=input_data,
+                        student_data_reader=student_data_reader,
+                        past_paper_readers=past_paper_readers
+                    )
 
-                    for schedule_paper in scheduled_papers:
-                        writer.write_exam_schedule_record(schedule_paper)
-                time.sleep(0.5)
+                if scheduler.student_has_complete_schedule():
+                  print(f"{Colors.GREEN} {Symbols.circle} Exam preparation schedule already assigned - {student.name} {Colors.RESET}")
+                  
+                else:
+                    scheduled_papers = scheduler.get_scheduled_papers_for_student()
+                    with LibUtils.spinner(
+                            start_text=f"Saving exam preparation schedule - {student.name}",
+                            success_text=f"Successfully saved exam preparation schedule - {student.name}"
+                        ):
+                        for schedule_paper in scheduled_papers:
+                            writer.write_exam_schedule_record(schedule_paper)
+                    time.sleep(1)
         
     @staticmethod
     def send_schedules():
         
-        for student in students_data:  
-            schedule = Schedule(student_data=student).generate_schedule_to_send()
+        for grade in EceswaGrade:
+            reader = StudentDataReader()
+            writer = StudentDataWriter()
             
-            if not schedule:
-                continue
-            
-            messenger = WhatsAppMessenger(schedule=schedule)
-            messenger.send_msg()
-            # schedule.assign_schedule()         
-    
+            students = reader.get_all_students_by_grade(grade)
+        
+        
+            for student in students:  
+                schedule_records = reader.get_exam_schedule_records_by_student_id_and_day(
+                    student.id,
+                    '06-08-25'
+                )
+                
+                for past_paper in schedule_records:  
+                    if not past_paper:
+                        continue
+                    
+                    msg = WhatsAppMessenger(phone=student.phone, past_paper=past_paper).send_msg()
+                    print(msg)
+                    time.sleep(1)

@@ -1,17 +1,18 @@
 import csv
-from typing import Dict, List
+from dataclasses import asdict
+from typing import List
 
+from data.students.student_data import StudentData
 from lib.grade import EceswaGrade
-from lib.paths import StudentCSVPaths
+from lib.typing.domain.schedule import ScheduledPastPaperMetadata
 from lib.typing.domain.student import Student
 
-# data/students/student_data_reader.py
-class StudentDataReader:
-    def __init__(self, grade: str):
-        self._grade = grade
-        self._paths = StudentCSVPaths()
 
-    def get_students_by_grade(self) -> List[Student]:
+class StudentDataReader(StudentData):
+    def __init__(self):
+        super().__init__()
+
+    def get_all_students_by_grade(self, grade: EceswaGrade) -> List[Student]:
         """
         Retrieve all students for the given grade.
 
@@ -31,10 +32,10 @@ class StudentDataReader:
             for row in reader:
                 if len(row) >= 3:
                     try:
-                        student_id = int(row[0])
+                        student_id = row[0]
                         name = row[1].strip()
                         student_grade = row[2].strip()
-                        if student_grade == self._grade:
+                        if student_grade == grade.value:
                             matching_infos.append((student_id, name, student_grade))
                     except ValueError:
                         continue
@@ -51,7 +52,7 @@ class StudentDataReader:
             for row in reader:
                 if len(row) >= 2:
                     try:
-                        student_id = int(row[0])
+                        student_id = row[0]
                         if student_id in {info[0] for info in matching_infos}:
                             contact_map[student_id] = row[1].strip()
                     except ValueError:
@@ -65,7 +66,7 @@ class StudentDataReader:
             for row in reader:
                 if len(row) >= 2:
                     try:
-                        student_id = int(row[0])
+                        student_id = row[0]
                         if student_id in {info[0] for info in matching_infos}:
                             subjects_map[student_id] = [s.strip() for s in row[1:] if s.strip()]
                     except ValueError:
@@ -84,12 +85,77 @@ class StudentDataReader:
             ))
 
         return students
+    
+    def exam_schedule_record_exists(self, record: ScheduledPastPaperMetadata) -> bool:
+        path = self._paths.assigned_schedules_file
+        if not path.exists():
+            return False
 
-    def get_assigned_schedules(self) -> List[Dict[str, str]]:
-        rows = []
-        if self._paths.assigned_schedules_file.exists():
-            with self._paths.assigned_schedules_file.open(mode='r', newline='', encoding='utf-8') as file:
-                reader = csv.DictReader(file)
+        record_dict = {key: asdict(record)[key] for key in self._exam_schedule_record_fieldnames}
+
+        with path.open("r", newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if all(str(row[key]).strip() == str(record_dict[key]).strip() for key in self._exam_schedule_record_fieldnames):
+                    return True
+
+        return False
+
+    def get_all_exam_schedule_records_by_student_id(self, id: str) -> List[ScheduledPastPaperMetadata]:
+        """
+        Returns all scheduled exam records for the given student ID.
+        """
+        matching_records = []
+        path = self._paths.assigned_schedules_file
+
+        if path.exists():
+            with path.open(mode='r', newline='', encoding='utf-8') as file:
+                reader = csv.DictReader(file, fieldnames=self._exam_schedule_record_fieldnames)
+                next(reader, None)  # Skip header
+
                 for row in reader:
-                    rows.append(row)
-        return rows
+                    if row.get("student_id", "").strip() == id.strip():
+                        try:
+                            record = ScheduledPastPaperMetadata(
+                                student_id=row["student_id"],
+                                date=row["date"],
+                                grade=row["grade"],
+                                subject=row["subject"],
+                                year=int(row["year"]),
+                                session=row["session"],
+                                url=row["url"],
+                                paper=row["paper"]
+                            )
+                            matching_records.append(record)
+                        except Exception as e:
+                            print(f"[StudentDataReader] Skipping row due to error: {e}")
+
+        return matching_records
+
+    def get_exam_schedule_records_by_student_id_and_day(self, student_id: str, day: str) -> list[ScheduledPastPaperMetadata]:
+        records = []
+
+        file_path = self._paths.assigned_schedules_file
+        if not file_path.exists():
+            return records
+
+        with file_path.open(mode='r', newline='', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row["student_id"] == str(student_id) and row["date"] == day:
+                    try:
+                        records.append(ScheduledPastPaperMetadata(
+                            student_id=row["student_id"],
+                            date=row["date"],
+                            grade=row["grade"],
+                            subject=row["subject"],
+                            year=int(row["year"]),
+                            session=row["session"],
+                            url=row["url"],
+                            paper=row["paper"]
+                        ))
+                    except Exception as e:
+                        print(f"[StudentDataReader] Skipping invalid row: {row} — {e}")
+                        continue
+
+        return records
