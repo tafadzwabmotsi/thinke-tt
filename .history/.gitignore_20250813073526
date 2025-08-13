@@ -1,0 +1,10 @@
+# Ignore environment files
+.env
+*.env
+
+
+# Ignore database folder
+/database/
+
+# Local history folder (VS Code extension)
+.history/
