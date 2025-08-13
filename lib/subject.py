@@ -50,6 +50,7 @@ class SaveMyExamsIgcseSubject(Enum):
     BUSINESS = SaveMyExamsSubjectDefinition("Business", "Business Studies")
     CHEMISTRY = SaveMyExamsSubjectDefinition("Chemistry", "Chemistry") 
     COMPUTER_SCIENCE = SaveMyExamsSubjectDefinition("Computer Science", "Computer Science")
+    
     ECONOMICS = SaveMyExamsSubjectDefinition("Economics", "Economics") 
     ENGLISH_LANGUAGE = SaveMyExamsSubjectDefinition("English Language", "English Language") 
     ENGLISH_LITERATURE = SaveMyExamsSubjectDefinition("English Literature", "Literature in English") 

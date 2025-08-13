@@ -21,6 +21,10 @@ class StudentCSVPaths:
     @property
     def assigned_schedules_file(self) -> Path:
         return self.base_dir / "assigned_schedules.csv"
+    
+    @property
+    def sent_msgs_file(self) -> Path:
+        return self.base_dir / "sent_msgs.csv"
 
 @dataclass
 class ExamScheduleCSVPaths:
@@ -43,6 +47,9 @@ class ExamScheduleCSVPaths:
     def prioritized_councils_file(self) -> Path:
         return self.base_dir / "prioritized_councils.csv"
     
+    @property
+    def downloaded_past_papers_file(self) -> Path:
+        return self.base_dir / "downloaded_past_papers.csv"
     
 @dataclass
 class PastPaperCSVPaths:

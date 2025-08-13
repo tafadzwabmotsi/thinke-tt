@@ -1,6 +1,4 @@
 import os
-from pathlib import Path
-from typing import List
 import requests
 from urllib.parse import urlparse
 import time
@@ -11,10 +9,8 @@ from lib.grade import Grade
 from lib.subject import EceswaSubject, PapaCambridgeIgcseSubject, Subject
 from lib.utils import LibUtils
 
-from .utils import download_file, get_urls_for_nonexistent_files
 from ..scraper_tools.criterion import PaperCount
 from ..scraper_tools.eceswa import EceswaScraper
-
 from ..scraper_tools.papacambridge import PapaCambridgeScraper
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -35,6 +31,20 @@ class PastPaperDownloader:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
         })
 
+    def download_pure(self, url: str, path: str) -> bool:
+        """
+        Download a file from the given URL and save it to the specified path.
+
+        Args:
+        url (str): The full URL of the file to download.
+        path (str): The local file path (including filename) where the
+            downloaded file will be saved.
+
+        Returns:
+            bool: True if the download completed successfully, False otherwise.
+        """
+        return LibUtils.download_file(self.session, url, path)
+
     def download(
         self,
         grade: Grade,
@@ -46,13 +56,6 @@ class PastPaperDownloader:
         Downloads PDF past papers for a specified grade and subject, and saves them
         to the provided download path. 
 
-        The method performs the following:
-        - Fetches download URLs for the subject and grade.
-        - Skips files that already exist.
-        - Downloads missing files concurrently using a thread pool.
-        - Displays a progress bar using `tqdm`.
-        - Adds a small delay between downloads to reduce server strain.
-
         Args:
             grade (Grade): The academic grade
             subject (Subject): The subject to download past papers for.
@@ -61,7 +64,7 @@ class PastPaperDownloader:
 
         Returns:
             None: This method performs downloads and saves files but returns nothing.
-    """
+        """
         if isinstance(subject, EceswaSubject):
             urls = self._eceswa_scraper.get_pdf_download_urls(grade, subject, paper_count)
         elif isinstance(subject, PapaCambridgeIgcseSubject):
@@ -92,7 +95,7 @@ class PastPaperDownloader:
     
         # Wrap the download function to include tqdm and sleep
         def task_wrapper(url: str, path: str) -> tuple[str, bool]:
-            success = download_file(self.session, url, path)
+            success = LibUtils.download_file(self.session, url, path)
             time.sleep(0.5)
             return (os.path.basename(path), success)
 

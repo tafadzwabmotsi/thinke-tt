@@ -9,3 +9,5 @@ halo
 pyexcel-ods3
 pywhatkit   
 textual
+python-dotenv
+google-adk

@@ -1,11 +1,12 @@
 import csv
 from dataclasses import asdict
+import os
 from pathlib import Path
 import uuid
 
 from data.students.student_data import StudentData
 from data.students.student_data_reader import StudentDataReader
-from lib.typing.domain.schedule import ScheduledPastPaperMetadata
+from lib.typing.domain.schedule import MsgRecord, ScheduledPastPaperMetadata
 from lib.typing.domain.student import StudentRecord
 
 class StudentDataWriter(StudentData):
@@ -143,3 +144,29 @@ class StudentDataWriter(StudentData):
             print(f"Failed to write schedule record: {e}")
             return False
 
+    def write_msg_record(self, record: MsgRecord) -> bool:
+        file_path = self._paths.sent_msgs_file
+        headers = list(MsgRecord.__annotations__.keys())
+        record_dict = asdict(record)
+
+        # Ensure the file exists with headers
+        file_exists = os.path.exists(file_path)
+        
+        if not file_exists:
+            with open(file_path, mode='w', newline='', encoding='utf-8') as f:
+                writer = csv.DictWriter(f, fieldnames=headers)
+                writer.writeheader()
+
+        # Check if record already exists
+        with open(file_path, mode='r', newline='', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if all(row[key] == record_dict[key] for key in headers):
+                    return False  # Duplicate found
+
+        # Write the new record
+        with open(file_path, mode='a', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=headers)
+            writer.writerow(record_dict)
+
+        return True

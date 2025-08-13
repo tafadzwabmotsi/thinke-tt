@@ -4,6 +4,7 @@ import csv
 from typing import Dict, List
 from lib.paths import PastPaperCSVPaths
 from lib.typing.domain.schedule import PastPaperMetadata
+from lib.utils import LibUtils
 
 
 # data/subjects/past_paper_metadata_reader.py
@@ -26,7 +27,7 @@ class PastPaperMetadataReader:
                             year=int(row['year'].strip()),
                             session=row['session'].strip(),
                             url=row['url'].strip(),
-                            paper=""
+                            paper=LibUtils.extract_paper_label(row['url'].strip())
                         )
                         metadata.append(paper)
                     except KeyError:

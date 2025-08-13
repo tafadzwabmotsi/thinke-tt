@@ -1,6 +1,7 @@
 import csv
 from dataclasses import asdict
-from typing import List
+import os
+
 
 from data.students.student_data import StudentData
 from lib.grade import EceswaGrade
@@ -12,7 +13,7 @@ class StudentDataReader(StudentData):
     def __init__(self):
         super().__init__()
 
-    def get_all_students_by_grade(self, grade: EceswaGrade) -> List[Student]:
+    def get_students_by_grade(self, grade: EceswaGrade) -> list[Student]:
         """
         Retrieve all students for the given grade.
 
@@ -22,7 +23,7 @@ class StudentDataReader(StudentData):
         Returns:
             List[Student]: A list of fully populated Student objects.
         """
-        students: List[Student] = []
+        students: list[Student] = []
         matching_infos = []
 
         # Read student_info.csv and collect matching students
@@ -101,7 +102,7 @@ class StudentDataReader(StudentData):
 
         return False
 
-    def get_all_exam_schedule_records_by_student_id(self, id: str) -> List[ScheduledPastPaperMetadata]:
+    def get_exam_schedules_by_id(self, id: str) -> list[ScheduledPastPaperMetadata]:
         """
         Returns all scheduled exam records for the given student ID.
         """
@@ -111,7 +112,7 @@ class StudentDataReader(StudentData):
         if path.exists():
             with path.open(mode='r', newline='', encoding='utf-8') as file:
                 reader = csv.DictReader(file, fieldnames=self._exam_schedule_record_fieldnames)
-                next(reader, None)  # Skip header
+                next(reader, None)
 
                 for row in reader:
                     if row.get("student_id", "").strip() == id.strip():
@@ -121,7 +122,7 @@ class StudentDataReader(StudentData):
                                 date=row["date"],
                                 grade=row["grade"],
                                 subject=row["subject"],
-                                year=int(row["year"]),
+                                year=row["year"],
                                 session=row["session"],
                                 url=row["url"],
                                 paper=row["paper"]
@@ -132,7 +133,7 @@ class StudentDataReader(StudentData):
 
         return matching_records
 
-    def get_exam_schedule_records_by_student_id_and_day(self, student_id: str, day: str) -> list[ScheduledPastPaperMetadata]:
+    def get_exam_schedules_by_id_and_day(self, student_id: str, day: str) -> list[ScheduledPastPaperMetadata]:
         records = []
 
         file_path = self._paths.assigned_schedules_file
@@ -149,7 +150,7 @@ class StudentDataReader(StudentData):
                             date=row["date"],
                             grade=row["grade"],
                             subject=row["subject"],
-                            year=int(row["year"]),
+                            year=row["year"],
                             session=row["session"],
                             url=row["url"],
                             paper=row["paper"]
@@ -159,3 +160,18 @@ class StudentDataReader(StudentData):
                         continue
 
         return records
+
+    def msgs_for_id_and_day_exist(self, student_id: str, day: str) -> bool:
+        file_path = self._paths.sent_msgs_file
+
+        if not os.path.exists(file_path):
+            return False 
+
+        with open(file_path, mode='r', newline='', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                if row['student_id'] == student_id and row['date'] == day:
+                    return True  
+
+        return False 
+            
